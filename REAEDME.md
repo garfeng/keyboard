@@ -12,6 +12,14 @@
 
 希望能帮到不小心买到类似键盘的你。
 
+解压后，双击里面的 keyboard.exe 运行。
+
+可以设置为开机启动，这样以后就不需要手动双击了。
+
+下载地址：https://github.com/garfeng/keyboard/releases/latest
+
+自己修改参数编译：
+
 ``` shell
 
 g++ keyboard.cpp -o keyboard.exe
