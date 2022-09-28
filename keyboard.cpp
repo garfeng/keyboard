@@ -3,6 +3,8 @@
 #include <iostream>
 #include <time.h>
 
+#include "keyboard.h"
+
 using namespace std;
 
 // 某款机械键盘，频繁出现按一次，响应多次的情况。
@@ -19,12 +21,6 @@ using namespace std;
 // 所以，我写了这个过滤工具，你可以设置自己的击键。
 // 本程序运行后，会帮你屏蔽超过该击键的重复触发。
 
-// =========== 下面是配置 ==========
-// 设置你的击键速度 多少下/秒
-// 不要设置太高
-// 讲真我觉得最高 20 差不多了
-const int KPressRate = 10;
-
 // ============== 下面是程序部分 ===============
 
 // variable to store the HANDLE to the hook. Don't declare it anywhere else then globally
@@ -35,7 +31,6 @@ double during;
 DWORD last_code = 0;
 
 double delay_time = 100.0;
-
 
 
 // This struct contains the data received by the hook callback. As you see in the callback function
@@ -62,7 +57,7 @@ LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
             finish  = clock();
             during = double(finish - start);
             if (during < delay_time && kbdStruct.vkCode == last_code) {
-                cout << "Repeat key : 0x" << hex << last_code << "! Deny!" << endl;
+                cout << "Repeat key : 0x" << hex << last_code << "! Deny! keyboard double click in:" << during << "ms" << endl;
                 return 1;
             }
             start = clock();
@@ -86,17 +81,19 @@ void SetHook() {
     }
 }
 
-
-
-int main() {
-    start = clock();
-    if (KPressRate <= 0) {
-        cout << "击键设置有误" << endl;
-        return -1;
+void UpdateKeyPressRate(int pressRate) {
+    if (pressRate <= 0) {
+        return;
     }
-    delay_time = double(1000 / KPressRate);
 
-    cout << "会尝试屏蔽时间间隔小于 " << delay_time << " 毫秒的重复击键。" << endl;
+    delay_time = double(1000 / (double)pressRate);
+}
+
+
+int Setup() {
+    start = clock();
+
+    cout << "start monitor" << endl;
 
     // Set the hook
     SetHook();
