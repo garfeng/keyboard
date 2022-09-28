@@ -18,11 +18,8 @@
 
 下载地址：https://github.com/garfeng/keyboard/releases/latest
 
-自己修改参数编译：
+## 日志
 
-``` shell
+* 2022年9月28日：加系统托盘图标
 
-g++ keyboard.cpp -o keyboard.exe
-./keyboard.exe
-
-```
+* 2018年6月：基本功能完成
